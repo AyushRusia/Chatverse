@@ -1,0 +1,29 @@
+.col {
+  width: 100%;
+  margin: 2%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.row {
+  margin: 1%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.preview {
+  border-radius: 100%;
+  margin-bottom: 8%;
+  background-color: blue;
+  height: 180px;
+  width: 180px;
+}
+
+.img {
+  width: 200px;
+  border-radius: 50%;
+  border: 2px solid gray;
+  object-fit: cover;
+  height: 200px;
+}
