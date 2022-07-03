@@ -14,10 +14,10 @@ export class Invitation {
   _id: string;
 
   @Column()
-  sender: string;
+  sender_id: string;
 
   @Column()
-  reciever: string;
+  reciever_id: string;
 
   @Column({
     type: 'enum',

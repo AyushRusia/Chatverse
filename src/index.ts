@@ -4,14 +4,17 @@ const app = express();
 //Database
 import { AppDataSource } from './sql/connection';
 
-import router from './controllers/auth';
+import Authrouter from './controllers/auth';
+import Apirouter from './controllers/invitation';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import authorize from './middleware/auth';
 dotenv.config();
 
 app.use(cors());
 app.use(express.json());
-app.use('/auth', router);
+app.use('/auth', Authrouter);
+app.use('/api', authorize, Apirouter);
 
 AppDataSource.initialize()
   .then(() => {

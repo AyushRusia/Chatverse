@@ -59,7 +59,21 @@ router.post('/login', async (req: express.Request, res: express.Response) => {
     const hash = await bcrypt.compareSync(password, check.password);
     if (!hash) return res.status(400).json({ error: 'Invalid Pass' });
     const token = await jwt.sign({ email: email }, process.env.JWT_KEY);
-    return res.status(200).json({ token: token });
+    return res.status(200).json({ token: token, user: check });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ Error });
+  }
+});
+
+router.get('/user', async (req: express.Request, res: express.Response) => {
+  try {
+    return res.json({
+      email: 'ayush@gmail.com',
+      name: 'AYush',
+      profile: 'ff',
+      _id: 'dx',
+    });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ Error });
