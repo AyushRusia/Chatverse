@@ -8,8 +8,24 @@ import Box from '@mui/material/Box';
 
 import Container from '@mui/material/Container';
 import axios from 'axios';
+import { useRouter } from 'next/router';
+import { QueryClient, useMutation, useQueryClient } from 'react-query';
+import { loginMuattion } from '../../react-query/mutations/loginMutation';
+import nookies from 'nookies';
 
 export default function Login() {
+  const router = useRouter();
+  const queryClient = useQueryClient();
+  const mutatation = useMutation(loginMuattion, {
+    onSuccess: (data) => {
+      //cookie mein token save karana
+      nookies.set(undefined, 'token', data.token);
+      router.push('/dashboard');
+    },
+    onError: (err) => {
+      console.log(err);
+    },
+  });
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -17,12 +33,13 @@ export default function Login() {
     const email = data.get('email');
     const password = data.get('password');
 
-    const response = await axios.post(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/login`,
-      { email, password }
-    );
+    // const response = await axios.post(
+    //   `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/login`,
+    //   { email, password }
+    // );
 
-    console.log(response);
+    // console.log(response);
+    mutatation.mutate({ email, password });
   };
 
   return (
