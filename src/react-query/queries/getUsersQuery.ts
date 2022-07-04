@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { person } from '../../types';
-import nookies from 'nookies';
+import cookies from 'js-cookie';
 
 export const getUsersQuery = async (key: string): Promise<person[]> => {
   const response = await axios.post(
@@ -8,7 +8,7 @@ export const getUsersQuery = async (key: string): Promise<person[]> => {
     { key: key },
     {
       headers: {
-        authorization: '',
+        authorization: cookies.get('token'),
       },
     }
   );

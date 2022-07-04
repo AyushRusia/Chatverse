@@ -3,6 +3,8 @@ import { NextPage } from 'next';
 import React from 'react';
 import { useQuery, useQueryClient } from 'react-query';
 import MyAppBar from '../../components/Dashboard/Appbar';
+import ReceivedInvitation from '../../components/Dashboard/Invitations/recieveinvitation';
+import SentInvitation from '../../components/Dashboard/Invitations/sendinvitation';
 import { viewerQuery } from '../../react-query/queries/viewerQuery';
 import { person } from '../../types';
 
@@ -25,7 +27,7 @@ const Dashoboard: NextPage = () => {
             <h1>Hello Ayush</h1>
           </Grid>
           <Grid item xs={12} md={5}>
-            <Paper elevation={6} className='container'>
+            <Paper elevation={6} sx={{ height: '' }}>
               <Tabs
                 value={tab}
                 onChange={handleChange}
@@ -38,11 +40,7 @@ const Dashoboard: NextPage = () => {
                 classsName='tab'
               </Tabs>
               <Divider />
-              {tab === 0 ? (
-                <h1>sent Invitation</h1>
-              ) : (
-                <h1>recieved invitation</h1>
-              )}
+              {tab === 0 ? <SentInvitation /> : <ReceivedInvitation />}
             </Paper>
           </Grid>
         </Grid>

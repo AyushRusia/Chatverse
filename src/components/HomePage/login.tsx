@@ -7,19 +7,17 @@ import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 
 import Container from '@mui/material/Container';
-import axios from 'axios';
 import { useRouter } from 'next/router';
-import { QueryClient, useMutation, useQueryClient } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 import { loginMuattion } from '../../react-query/mutations/loginMutation';
-import nookies from 'nookies';
+import cookies from 'js-cookie';
 
 export default function Login() {
   const router = useRouter();
-  const queryClient = useQueryClient();
   const mutatation = useMutation(loginMuattion, {
     onSuccess: (data) => {
       //cookie mein token save karana
-      nookies.set(undefined, 'token', data.token);
+      cookies.set('token', data.token);
       router.push('/dashboard');
     },
     onError: (err) => {

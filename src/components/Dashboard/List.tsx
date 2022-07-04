@@ -7,9 +7,10 @@ import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import { person } from '../../types';
-import { useQuery } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import { getUsersQuery } from '../../react-query/queries/getUsersQuery';
 import { Button } from '@mui/material';
+import { sendInvitation } from '../../react-query/mutations/sendInvitation';
 
 interface ListProp {
   hidden: boolean;
@@ -18,9 +19,17 @@ interface ListProp {
 
 export default function PersonList(props: ListProp) {
   const data = Array.isArray(props.data) ? props.data : [];
-  console.log(props.data, data);
-
-  const sendInvite = async (_id: string) => {};
+  const mutatation = useMutation(sendInvitation, {
+    onSuccess: (data) => {
+      //refetch query my send invitations
+    },
+    onError: (err) => {
+      console.log(err);
+    },
+  });
+  const sendInvite = async (_id: string) => {
+    mutatation.mutate(_id);
+  };
   return (
     <List
       sx={{
