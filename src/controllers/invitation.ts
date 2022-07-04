@@ -28,8 +28,6 @@ router.post('/persons', async (req: RequestWithUser, res: express.Response) => {
       .take(10)
       .getMany();
 
-    console.log(users);
-
     // Filtering such that request is sent or not
 
     const filterdusers = users.map(async (user) => {
@@ -39,7 +37,6 @@ router.post('/persons', async (req: RequestWithUser, res: express.Response) => {
       });
 
       if (check1) {
-        console.log('check1 true');
         return null;
       }
 
@@ -49,7 +46,6 @@ router.post('/persons', async (req: RequestWithUser, res: express.Response) => {
       });
 
       if (check2) {
-        console.log('check2 true');
         return null;
       }
 
@@ -70,8 +66,6 @@ router.get(
   '/sendInvite',
   async (req: RequestWithUser, res: express.Response) => {
     try {
-      console.log('aai');
-
       const sender_id = req._id;
       const senderData = await userRepository.findOneBy({ _id: sender_id });
       const ids = await invitationRepository
@@ -146,8 +140,6 @@ router.get(
   '/recieveInvite',
   async (req: RequestWithUser, res: express.Response) => {
     try {
-      console.log('aai');
-
       const reciever_id = req._id;
       const recieverData = await userRepository.findOneBy({ _id: reciever_id });
       const ids = await invitationRepository
@@ -234,5 +226,51 @@ router.post(
     }
   }
 );
+
+router.get('/friends', async (req: RequestWithUser, res: express.Response) => {
+  try {
+    const id = req._id;
+    const users1ids = await friendRepository
+      .createQueryBuilder('friend')
+      .select(['friend._id', 'friend.user1'])
+      .where('user2 = :id', { id: id })
+      .getMany();
+    const users2ids = await friendRepository
+      .createQueryBuilder('friend')
+      .select(['friend._id', 'friend.user2'])
+      .where('user1 = :id', { id: id })
+      .getMany();
+
+    const user1 = users1ids.map(async (id) => {
+      const user = await userRepository.findOneBy({ _id: id.user1 });
+      return {
+        _id: id._id,
+        friendId: user._id,
+        friendName: user.name,
+        friendEmail: user.email,
+        friendProfile: user.profile,
+      };
+    });
+
+    const user2 = users2ids.map(async (id) => {
+      const user = await userRepository.findOneBy({ _id: id.user2 });
+      return {
+        _id: id._id,
+        friendId: user._id,
+        friendName: user.name,
+        friendEmail: user.email,
+        friendProfile: user.profile,
+      };
+    });
+
+    const result1 = await Promise.all(user1);
+    const result2 = await Promise.all(user2);
+    result1.concat(result2);
+    res.status(200).json({ data: result1 });
+  } catch (error) {
+    console.log(error);
+    res.send('Err');
+  }
+});
 
 export default router;

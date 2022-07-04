@@ -28,9 +28,14 @@ router.post(
 
       //cloudinary
 
-      const response = await Cloudinary.uploader.upload(profile, {
-        upload_preset: process.env.CLOUDINARY_FOLDER_NAME,
-      });
+      let url;
+      if (profile) {
+        const response = await Cloudinary.uploader.upload(profile, {
+          upload_preset: process.env.CLOUDINARY_FOLDER_NAME,
+        });
+
+        url = response.url;
+      } else url = '/dummy.png';
 
       const hashPassword = await bcrypt.hashSync(password, 4);
       const user = new Person();
@@ -38,7 +43,7 @@ router.post(
       user.name = name;
       user.email = email;
       user.password = hashPassword;
-      user.profile = response.url;
+      user.profile = url;
 
       const saveduser = await userRepository.save(user);
 
