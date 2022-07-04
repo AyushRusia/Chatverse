@@ -59,7 +59,7 @@ const ReceivedInvitation: React.FC = ({}) => {
               return (
                 <ListItem key={invitation._id}>
                   <ListItemAvatar>
-                    <Avatar alt='Remy Sharp' src='/dummy.png' />
+                    <Avatar alt='Remy Sharp' src={invitation.senderProfile} />
                   </ListItemAvatar>
                   <ListItemText
                     primary={invitation.senderName}

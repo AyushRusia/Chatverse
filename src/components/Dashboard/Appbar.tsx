@@ -107,9 +107,16 @@ export default function MyAppBar() {
   const [key, setKey] = React.useState('');
   const [persons, setPersons] = React.useState<person[]>([]);
   const [hidden, setHidden] = React.useState<boolean>(false);
+
+  const fetch = async () => {
+    if (key) {
+      const res = await getUsersQuery(key);
+      setPersons(res);
+      setHidden(false);
+    } else setHidden(true);
+  };
   const handleChange = async (event: any) => {
     setKey(event.target.value);
-
     if (event.target.value) {
       const res = await getUsersQuery(event.target.value);
       setPersons(res);
@@ -140,7 +147,9 @@ export default function MyAppBar() {
                 handleChange(event);
               }}
             />
-            {persons && <PersonList hidden={hidden} data={persons} />}
+            {persons && (
+              <PersonList hidden={hidden} data={persons} refetch={fetch} />
+            )}
           </Search>
           <Box sx={{ flexGrow: 2 }} />
           <Box

@@ -11,17 +11,19 @@ import { useMutation, useQuery } from 'react-query';
 import { getUsersQuery } from '../../react-query/queries/getUsersQuery';
 import { Button } from '@mui/material';
 import { sendInvitation } from '../../react-query/mutations/sendInvitation';
+import { sentInvitationsQuery } from '../../react-query/queries/sentInvitationsQuery';
 
 interface ListProp {
   hidden: boolean;
   data: person[];
+  refetch: () => void;
 }
 
 export default function PersonList(props: ListProp) {
   const data = Array.isArray(props.data) ? props.data : [];
   const mutatation = useMutation(sendInvitation, {
     onSuccess: (data) => {
-      //refetch query my send invitations
+      props.refetch();
     },
     onError: (err) => {
       console.log(err);
@@ -34,7 +36,8 @@ export default function PersonList(props: ListProp) {
     <List
       sx={{
         width: '100%',
-        bgcolor: 'transparent',
+        bgcolor: '#fff',
+        borderRadius: '0,0,5px,5px',
         position: 'absolute',
         maxHeight: '500px',
         overflowY: 'auto',

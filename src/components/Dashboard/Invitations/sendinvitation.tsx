@@ -18,15 +18,7 @@ import { useMutation, useQuery } from 'react-query';
 import { sentInvitationsQuery } from '../../../react-query/queries/sentInvitationsQuery';
 import { deleteInvitation } from '../../../react-query/mutations/deleteInvitation';
 
-interface Props {}
-
-const SentInvitation: React.FC<Props> = ({}) => {
-  const { data, isLoading, error, refetch } = useQuery(
-    'sentInvitations',
-    sentInvitationsQuery
-  );
-
-  if (isLoading) return <h1>Loading</h1>;
+const SentInvitation = ({}) => {
   const deleteMutation = useMutation(deleteInvitation, {
     onSuccess: () => {
       refetch();
@@ -35,6 +27,13 @@ const SentInvitation: React.FC<Props> = ({}) => {
       console.log(e);
     },
   });
+  const { data, isLoading, error, refetch } = useQuery(
+    'sentInvitations',
+    sentInvitationsQuery
+  );
+
+  if (isLoading) return <h1>Loading</h1>;
+
   const handleDelete = (id: string) => {
     deleteMutation.mutate(id);
   };

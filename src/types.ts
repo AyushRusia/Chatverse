@@ -16,3 +16,12 @@ export interface invitation {
   recieverEmail: string;
   recieverProfile: string;
 }
+
+export interface friend {
+  _id: string;
+
+  friendId: string;
+  friendName: string;
+  friendEmail: string;
+  friendProfile: string;
+}
