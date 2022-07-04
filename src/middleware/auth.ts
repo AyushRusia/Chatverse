@@ -10,18 +10,15 @@ async function authorize(
   next: express.NextFunction
 ) {
   try {
-    // const token = req.headers.authorization;
+    const token = req.headers.authorization;
 
-    // console.log(token);
+    if (!token) return res.status(400).json('unauthorised');
 
-    // if (!token) return res.status(400).json('unauthorised');
+    const verified: any = await jwt.verify(token, process.env.JWT_KEY);
 
-    // const verified: any = await jwt.verify(token, process.env.JWT_KEY);
+    if (!verified) return res.status(400).json('token does not matched');
 
-    // if (!verified) return res.status(400).json('token does not matched');
-    // console.log(verified);
-
-    // req._id = verified.user;
+    req._id = verified.user;
 
     next();
   } catch (e) {

@@ -58,7 +58,7 @@ router.post('/login', async (req: express.Request, res: express.Response) => {
 
     const hash = await bcrypt.compareSync(password, check.password);
     if (!hash) return res.status(400).json({ error: 'Invalid Pass' });
-    const token = await jwt.sign({ email: email }, process.env.JWT_KEY);
+    const token = await jwt.sign({ user: check._id }, process.env.JWT_KEY);
     return res.status(200).json({ token: token, user: check });
   } catch (error) {
     console.log(error);
