@@ -15,6 +15,16 @@ const invitationRepository = AppDataSource.getRepository(Invitation);
 const friendRepository = AppDataSource.getRepository(Friend);
 import { v4 as uuidv4 } from 'uuid';
 
+router.get('/viewer', async (req: RequestWithUser, res: express.Response) => {
+  try {
+    const _id = req._id;
+    const data = await userRepository.findOneBy({ _id });
+    res.status(200).json({ data: data });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 router.post('/persons', async (req: RequestWithUser, res: express.Response) => {
   try {
     // const _id = req._id;
@@ -262,11 +272,13 @@ router.get('/friends', async (req: RequestWithUser, res: express.Response) => {
         friendProfile: user.profile,
       };
     });
+    console.log(users1ids, users2ids);
 
     const result1 = await Promise.all(user1);
     const result2 = await Promise.all(user2);
-    result1.concat(result2);
-    res.status(200).json({ data: result1 });
+
+    const result = result1.concat(result2);
+    res.status(200).json({ data: result });
   } catch (error) {
     console.log(error);
     res.send('Err');
