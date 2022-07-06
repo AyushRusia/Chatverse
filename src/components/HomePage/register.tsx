@@ -16,11 +16,14 @@ export default function Register() {
   const [preview, setPreview] = React.useState<string>();
   const [image64, setImage64] = React.useState<any>();
   const handleImage = (event: any) => {
-    console.log(event.target.files);
+    const file = event.target.files[0];
+    console.log(file);
+
+    if (file.size > 1024 * 100) return alert('File Size greater than 100 KB');
     let reader = new FileReader();
 
-    reader.readAsDataURL(event.target.files[0]);
-    setPreview(URL.createObjectURL(event.target.files[0]));
+    reader.readAsDataURL(file);
+    setPreview(URL.createObjectURL(file));
     reader.onload = function () {
       console.log(reader.result);
       setImage64(reader.result?.toString());
@@ -52,10 +55,10 @@ export default function Register() {
   return (
     <Container component='main'>
       <CssBaseline />
-      <Box className={styles.col}>
+      <Box>
         <Box component='form' onSubmit={handleSubmit} sx={{ mt: 1 }}>
-          <Grid className={styles.row}>
-            <Grid className={styles.col}>
+          <Grid container>
+            <Grid item xs={12} md={5} className={styles.col}>
               <TextField
                 margin='normal'
                 required
@@ -63,7 +66,6 @@ export default function Register() {
                 id='name'
                 label='Name'
                 name='name'
-                autoComplete='name'
               />
               <TextField
                 margin='normal'
@@ -72,7 +74,6 @@ export default function Register() {
                 id='email'
                 label='Email Address'
                 name='email'
-                autoComplete='email'
               />
               <TextField
                 margin='normal'
@@ -82,22 +83,47 @@ export default function Register() {
                 label='Password'
                 type='password'
                 id='password'
-                autoComplete='current-password'
               />
             </Grid>
-            <Grid className={styles.col}>
-              <img className={styles.img} src={preview}></img>
-              <label htmlFor='preview'>Upload</label>
-              <input
-                accept='image/*'
-                id='preview'
-                name='preview'
-                hidden
-                type='file'
-                onChange={(e) => {
-                  handleImage(e);
+            <Grid item xs={12} md={5} className={styles.col}>
+              <img
+                className={styles.img}
+                src={preview ? preview : '/favicon.ico'}
+              ></img>
+              {/* <label htmlFor='preview'>
+                Upload
+                <input
+                  accept='image/*'
+                  id='preview'
+                  name='preview'
+                  hidden
+                  type='file'
+                  onChange={(e) => {
+                    handleImage(e);
+                  }}
+                />
+                <Button id='preview'>Upload</Button>
+              </label> */}
+              <label htmlFor='preview'>
+                <input
+                  id='preview'
+                  name='preview'
+                  accept='image/*'
+                  hidden
+                  multiple
+                  type='file'
+                />
+                <Button sx={{ margin: 'auto' }} component='span'>
+                  Upload
+                </Button>
+              </label>
+              <Button
+                onClick={() => {
+                  setPreview('');
                 }}
-              />
+              >
+                Remove
+              </Button>
             </Grid>
           </Grid>
           <Button

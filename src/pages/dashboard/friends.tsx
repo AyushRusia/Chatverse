@@ -28,29 +28,55 @@ const Dashoboard: NextPage = () => {
 
   const { data, isLoading, error } = useQuery('user', viewerQuery, {
     onSuccess: (data) => {
-      socket.auth = { userId: data._id };
+      socket.auth = { id: data._id };
       socket.connect();
     },
   });
-  socket.onAny((event, ...args) => {
-    console.log(event, args);
-  });
+
+  socket.onAny((event, ...args) => {});
   const [currentFriend, setFriend] = React.useState<friend>();
+  const [onlineUsers, setOnlineUsers] = React.useState<string[]>([]);
+  const [status, setStatus] = React.useState('Offline');
   const handleFriend = (friend: friend) => {
     setFriend(friend);
+
+    if (onlineUsers.includes(currentFriend?.friendId)) {
+      setStatus('Online');
+    }
   };
+  socket.on('connect-user', (val1, val2: string[]) => {
+    if (val1 == currentFriend?.friendId) setStatus('Online');
+    setOnlineUsers(val2);
+  });
+  socket.on('disconnect-user', (val1, val2) => {
+    if (val1 == currentFriend?.friendId) setStatus('Offline');
+    setOnlineUsers(val2);
+  });
   if (isLoading) return <h1>Loading</h1>;
   return (
     <>
       <Grid container className={styles.root}>
         <Grid item xs={12} sx={{ height: 'max-content' }}>
-          <MyAppBar />
+          <MyAppBar page='friend' />
         </Grid>
-        <Grid item xs={0} md={4} sx={{ height: '85vh' }}>
+        <Grid
+          item
+          xs={0}
+          md={4}
+          sx={{ height: '89.5vh', display: { xs: 'none', md: 'block' } }}
+        >
           <Friends currentFriend={currentFriend} setFriend={handleFriend} />
         </Grid>
-        <Grid item xs={12} md={8} sx={{ height: '85vh' }}>
-          <Chatbox currentFriend={currentFriend} id={data._id} />
+        <Grid item xs={12} md={8} sx={{ height: '89.5vh' }}>
+          {currentFriend ? (
+            <Chatbox
+              currentFriend={currentFriend}
+              id={data._id}
+              currentStatus={status}
+            />
+          ) : (
+            <h4>Welcome To Chatverse , Enjoy Chatting!!</h4>
+          )}
         </Grid>
       </Grid>
     </>

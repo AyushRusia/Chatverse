@@ -13,13 +13,13 @@ const Home: NextPage = () => {
 
   return (
     <>
-      <Grid container flexDirection='column' alignItems='center'>
-        <Box>
-          <Typography variant='h3' component={'h3'}>
+      <Grid container>
+        <Grid item xs={12}>
+          <Typography variant='h3' sx={{ textAlign: 'center' }}>
             Chatverse
           </Typography>
-        </Box>
-        <Box sx={{ width: '70%' }}>
+        </Grid>
+        <Grid item xs={12} md={12}>
           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
             <Tabs
               value={value}
@@ -27,8 +27,8 @@ const Home: NextPage = () => {
               aria-label='Auth Tab'
               centered
             >
-              <Tab sx={{ width: '100%' }} label='Login' id='1' />
-              <Tab sx={{ width: '100%' }} label='Register' id='2' />
+              <Tab sx={{ width: '50%' }} label='Login' id='1' />
+              <Tab sx={{ width: '50%' }} label='Register' id='2' />
             </Tabs>
           </Box>
           <TabPanel value={value} index={0}>
@@ -37,7 +37,7 @@ const Home: NextPage = () => {
           <TabPanel value={value} index={1}>
             <Register />
           </TabPanel>
-        </Box>
+        </Grid>
       </Grid>
     </>
   );

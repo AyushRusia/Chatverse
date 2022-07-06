@@ -9,7 +9,6 @@
 .container {
   height: 89.5vh;
 
-  padding: 0 0.5rem;
   display: flex;
   flex-direction: column;
   justify-content: space-around;

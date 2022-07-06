@@ -27,7 +27,7 @@ const Dashoboard: NextPage = () => {
   const { data, isLoading, error } = useQuery('user', viewerQuery);
 
   const router = useRouter();
-
+  if (error) router.push('/');
   const [tab, setTab] = React.useState<Number>(0);
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setTab(newValue);
