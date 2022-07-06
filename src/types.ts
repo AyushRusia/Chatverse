@@ -25,3 +25,9 @@ export interface friend {
   friendEmail: string;
   friendProfile: string;
 }
+
+export interface chat {
+  message: string;
+  time: Date;
+  senderId: string;
+}

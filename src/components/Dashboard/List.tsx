@@ -48,7 +48,11 @@ export default function PersonList(props: ListProp) {
         data.map((per, idx) => {
           return (
             <>
-              <ListItem sx={{ cursor: 'pointer' }} alignItems='center'>
+              <ListItem
+                key={per._id}
+                sx={{ cursor: 'pointer' }}
+                alignItems='center'
+              >
                 <ListItemAvatar>
                   <Avatar alt='Remy Sharp' src={per.profile} />
                 </ListItemAvatar>

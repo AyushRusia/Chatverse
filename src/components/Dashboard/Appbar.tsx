@@ -19,6 +19,7 @@ import PersonList from './List';
 import { person } from '../../types';
 import { getUsersQuery } from '../../react-query/queries/getUsersQuery';
 import { useQuery } from 'react-query';
+import { Logout } from '@mui/icons-material';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -106,7 +107,7 @@ export default function MyAppBar() {
 
   const [key, setKey] = React.useState('');
   const [persons, setPersons] = React.useState<person[]>([]);
-  const [hidden, setHidden] = React.useState<boolean>(false);
+  const [hidden, setHidden] = React.useState<boolean>(true);
 
   const fetch = async () => {
     if (key) {
@@ -160,9 +161,7 @@ export default function MyAppBar() {
               aria-label='show 4 new mails'
               color='inherit'
             >
-              <Badge badgeContent={69} color='error'>
-                <MailIcon />
-              </Badge>
+              <Logout />
             </IconButton>
           </Box>
           <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
