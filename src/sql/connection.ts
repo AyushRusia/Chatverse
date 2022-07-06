@@ -12,6 +12,7 @@
 
 import 'reflect-metadata';
 import { DataSource } from 'typeorm';
+import { Chat } from '../models/chat';
 import { Friend } from '../models/friend';
 import { Invitation } from '../models/invitation';
 import { Person } from '../models/user';
@@ -25,7 +26,7 @@ export const AppDataSource = new DataSource({
   database: 'ormtest',
   synchronize: true,
   logging: false,
-  entities: [Person, Invitation, Friend],
+  entities: [Person, Invitation, Friend, Chat],
   migrations: [],
   subscribers: [],
 });

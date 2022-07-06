@@ -16,7 +16,9 @@ import Apirouter from './controllers/invitation';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import authorize from './middleware/auth';
-import { chat, myroomChat, saveChat } from './utils';
+import { myroomChat, saveChat } from './chat';
+import { Chat } from './models/chat';
+import { inMemoryStore } from './store';
 dotenv.config();
 
 app.use(cors());
@@ -30,11 +32,14 @@ const io = new Server(server, {
   },
 });
 
-io.on('connection', (socket) => {
-  socket.onAny((event, ...args) => {
-    console.log(socket.id, event, args);
-  });
+const store = new inMemoryStore();
 
+io.on('connection', (socket) => {
+  const id = socket.handshake.auth.id;
+  store.setValue(id);
+  
+
+  io.emit('connect-user', id, store.getAllValue());
   socket.on('join-room', async (previous: string, room: string) => {
     await socket.leave(previous);
     await socket.join(room);
@@ -43,15 +48,14 @@ io.on('connection', (socket) => {
     socket.emit('room-chat', chats);
   });
 
-  socket.on('send-message', async (room: string, chat: chat) => {
-    // await saveChat({ room,chat);
-    const chats = await myroomChat(room);
-
+  socket.on('send-message', async (room: string, chat: Chat) => {
+    await saveChat(room, chat);
     socket.broadcast.to(room).emit('recieve-message', chat);
   });
 
-  socket.on('disconnet', () => {
-    console.log('user disconnected');
+  socket.on('disconnect', () => {
+    store.deleteValue(id);
+    socket.broadcast.emit('disconnect-user', id, store.getAllValue());
   });
 });
 AppDataSource.initialize()

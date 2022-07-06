@@ -272,7 +272,6 @@ router.get('/friends', async (req: RequestWithUser, res: express.Response) => {
         friendProfile: user.profile,
       };
     });
-    console.log(users1ids, users2ids);
 
     const result1 = await Promise.all(user1);
     const result2 = await Promise.all(user2);
