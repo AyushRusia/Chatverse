@@ -5,7 +5,9 @@
   "main": "src/index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "watch": "nodemon src/index.ts"
+    "watch": "nodemon src/index.ts",
+    "build": "tsc",
+    "start": "node out/index.js"
   },
   "author": "Ayush Rusia <ayushrusia11@outlook.com>",
   "license": "ISC",

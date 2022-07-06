@@ -16,14 +16,11 @@ import { Chat } from '../models/chat';
 import { Friend } from '../models/friend';
 import { Invitation } from '../models/invitation';
 import { Person } from '../models/user';
-
+import dotenv from 'dotenv';
+dotenv.config();
 export const AppDataSource = new DataSource({
   type: 'postgres',
-  host: 'localhost',
-  port: 5432,
-  username: 'postgres',
-  password: 'postgres',
-  database: 'ormtest',
+  url: `${process.env.DB_URL}`,
   synchronize: true,
   logging: false,
   entities: [Person, Invitation, Friend, Chat],
