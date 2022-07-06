@@ -58,39 +58,43 @@ export default function Register() {
       <Box>
         <Box component='form' onSubmit={handleSubmit} sx={{ mt: 1 }}>
           <Grid container>
-            <Grid item xs={12} md={5} className={styles.col}>
-              <TextField
-                margin='normal'
-                required
-                fullWidth
-                id='name'
-                label='Name'
-                name='name'
-              />
-              <TextField
-                margin='normal'
-                required
-                fullWidth
-                id='email'
-                label='Email Address'
-                name='email'
-              />
-              <TextField
-                margin='normal'
-                required
-                fullWidth
-                name='password'
-                label='Password'
-                type='password'
-                id='password'
-              />
+            <Grid item xs={12} md={5}>
+              <Box className={styles.col}>
+                <TextField
+                  margin='normal'
+                  required
+                  fullWidth
+                  id='name'
+                  label='Name'
+                  name='name'
+                />
+                <TextField
+                  margin='normal'
+                  required
+                  fullWidth
+                  id='email'
+                  label='Email Address'
+                  name='email'
+                />
+                <TextField
+                  margin='normal'
+                  required
+                  fullWidth
+                  name='password'
+                  label='Password'
+                  type='password'
+                  id='password'
+                />
+              </Box>
             </Grid>
-            <Grid item xs={12} md={5} className={styles.col}>
-              <img
-                className={styles.img}
-                src={preview ? preview : '/favicon.ico'}
-              ></img>
-              {/* <label htmlFor='preview'>
+            <Grid item xs={12} md={5}>
+              <Box className={styles.col}>
+                <img
+                  alt='Preview'
+                  className={styles.img}
+                  src={preview ? preview : '/favicon.ico'}
+                ></img>
+                {/* <label htmlFor='preview'>
                 Upload
                 <input
                   accept='image/*'
@@ -104,26 +108,30 @@ export default function Register() {
                 />
                 <Button id='preview'>Upload</Button>
               </label> */}
-              <label htmlFor='preview'>
-                <input
-                  id='preview'
-                  name='preview'
-                  accept='image/*'
-                  hidden
-                  multiple
-                  type='file'
-                />
-                <Button sx={{ margin: 'auto' }} component='span'>
-                  Upload
+                <label htmlFor='preview'>
+                  <input
+                    id='preview'
+                    name='preview'
+                    accept='image/*'
+                    hidden
+                    multiple
+                    type='file'
+                    onChange={(e) => {
+                      handleImage(e);
+                    }}
+                  />
+                  <Button sx={{ margin: 'auto' }} component='span'>
+                    Upload
+                  </Button>
+                </label>
+                <Button
+                  onClick={() => {
+                    setPreview('');
+                  }}
+                >
+                  Remove
                 </Button>
-              </label>
-              <Button
-                onClick={() => {
-                  setPreview('');
-                }}
-              >
-                Remove
-              </Button>
+              </Box>
             </Grid>
           </Grid>
           <Button

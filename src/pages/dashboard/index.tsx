@@ -24,10 +24,9 @@ import styles from '../../styles/dashboard.module.css';
 const Dashoboard: NextPage = () => {
   // query chalai {data, loading ,error} = viewerQuery(
 
-  const { data, isLoading, error } = useQuery('user', viewerQuery);
+  const { data, isLoading, error, isError } = useQuery('user', viewerQuery);
 
   const router = useRouter();
-  if (error) router.push('/');
   const [tab, setTab] = React.useState<Number>(0);
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setTab(newValue);
@@ -43,7 +42,7 @@ const Dashoboard: NextPage = () => {
         <Grid item xs={12} md={7}>
           <Box component='div' className={styles.container}>
             <Box className={styles.main}>
-              <img src={data?.profile} className={styles.img} />
+              <img alt='Profile' src={data?.profile} className={styles.img} />
               <Typography component='h3'>Hello , {data?.name}</Typography>
             </Box>
             <Box className={styles.main}>

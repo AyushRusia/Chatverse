@@ -40,9 +40,9 @@ const Dashoboard: NextPage = () => {
   const handleFriend = (friend: friend) => {
     setFriend(friend);
 
-    if (onlineUsers.includes(currentFriend?.friendId)) {
+    if (onlineUsers.includes(friend?.friendId)) {
       setStatus('Online');
-    }
+    } else setStatus('Offline');
   };
   socket.on('connect-user', (val1, val2: string[]) => {
     if (val1 == currentFriend?.friendId) setStatus('Online');
