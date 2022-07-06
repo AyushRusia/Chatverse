@@ -20,6 +20,9 @@ import { person } from '../../types';
 import { getUsersQuery } from '../../react-query/queries/getUsersQuery';
 import { useQuery } from 'react-query';
 import { Logout } from '@mui/icons-material';
+import { Button } from '@mui/material';
+import { useRouter } from 'next/router';
+import socket from '../../socket';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -61,7 +64,12 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function MyAppBar() {
+interface props {
+  page: string;
+}
+export default function MyAppBar(props: props) {
+  const { page } = props;
+  const router = useRouter();
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
     React.useState<null | HTMLElement>(null);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -98,9 +106,9 @@ export default function MyAppBar() {
           aria-haspopup='true'
           color='inherit'
         >
-          <AccountCircle />
+          <Logout></Logout>
         </IconButton>
-        <p>Profile</p>
+        Logout
       </MenuItem>
     </Menu>
   );
@@ -136,30 +144,46 @@ export default function MyAppBar() {
           >
             Chatverse
           </Typography>
-          <Search>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder='Search…'
-              inputProps={{ 'aria-label': 'search' }}
-              value={key}
-              onChange={(event) => {
-                handleChange(event);
-              }}
-            />
-            {persons && (
-              <PersonList hidden={hidden} data={persons} refetch={fetch} />
-            )}
-          </Search>
+          {page === 'dashboard' && (
+            <Search>
+              <SearchIconWrapper>
+                <SearchIcon />
+              </SearchIconWrapper>
+              <StyledInputBase
+                placeholder='Search…'
+                inputProps={{ 'aria-label': 'search' }}
+                value={key}
+                onChange={(event) => {
+                  handleChange(event);
+                }}
+              />
+              {persons && (
+                <PersonList hidden={hidden} data={persons} refetch={fetch} />
+              )}
+            </Search>
+          )}
           <Box sx={{ flexGrow: 2 }} />
           <Box
             sx={{ display: { xs: 'none', md: 'flex' }, marginRight: '10px' }}
           >
+            {page === 'friend' && (
+              <Button
+                onClick={() => {
+                  router.push('/dashboard');
+                }}
+                variant='text'
+                color='secondary'
+              >
+                Go to Dashboard
+              </Button>
+            )}
             <IconButton
               size='large'
               aria-label='show 4 new mails'
               color='inherit'
+              onClick={() => {
+                socket.disconnect();
+              }}
             >
               <Logout />
             </IconButton>
